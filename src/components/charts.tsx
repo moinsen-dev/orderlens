@@ -100,18 +100,28 @@ export function HistogramChart({
   height = 220,
   mode = 'value',
   color = 'var(--color-accent)',
+  tiltLabels = false,
 }: {
   data: Histogram[]
   height?: number
   mode?: 'value' | 'count'
   color?: string
+  /** Set when the labels are too wide to sit side by side (price ranges). */
+  tiltLabels?: boolean
 }) {
   const { m, mc, n } = useFmt()
   return (
     <ResponsiveContainer width="100%" height={height}>
-      <BarChart data={data} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
+      <BarChart data={data} margin={{ top: 4, right: 8, left: 0, bottom: tiltLabels ? 12 : 0 }}>
         <CartesianGrid vertical={false} />
-        <XAxis dataKey="label" tickLine={false} axisLine={false} interval={data.length > 26 ? 'preserveStartEnd' : 0} minTickGap={2} />
+        <XAxis
+          dataKey="label"
+          tickLine={false}
+          axisLine={false}
+          interval={data.length > 26 ? 'preserveStartEnd' : 0}
+          minTickGap={2}
+          {...(tiltLabels ? { angle: -35, textAnchor: 'end' as const, height: 46, dy: 4 } : {})}
+        />
         <YAxis tickFormatter={mode === 'value' ? mc : n} width={56} tickLine={false} axisLine={false} />
         <Tooltip
           contentStyle={tooltipStyle}

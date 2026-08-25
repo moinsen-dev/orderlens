@@ -78,7 +78,7 @@ export function InsightsView() {
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <Card title="Price distribution" subtitle="Line items grouped by price per unit">
-          <HistogramChart data={prices} mode="count" color="#14b8a6" />
+          <HistogramChart data={prices} mode="count" color="#14b8a6" tiltLabels height={250} />
         </Card>
         <Card title="Where and how you paid">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">

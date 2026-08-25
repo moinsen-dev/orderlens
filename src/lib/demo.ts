@@ -102,7 +102,8 @@ export function demoDataset(years = 8, ordersPerYear = 42): Dataset {
       let orderTotal = 0
 
       for (let l = 0; l < lines; l++) {
-        const [name, low, high] = CATALOGUE[Math.floor(rand() * CATALOGUE.length)]
+        const pick = Math.floor(rand() * CATALOGUE.length)
+        const [name, low, high] = CATALOGUE[pick]
         const quantity = rand() < 0.12 ? 2 : 1
         const gross = round(low + rand() * (high - low)) * quantity
         const tax = round((gross / 1.19) * 0.19)
@@ -115,7 +116,8 @@ export function demoDataset(years = 8, ordersPerYear = 42): Dataset {
         items.push({
           id: `${orderId}#${l}`,
           orderId,
-          asin: `B0${digits(rand, 8).toUpperCase()}`,
+          // Stable per product, so the demo shows real repeat purchases.
+          asin: asinFor(pick),
           name,
           quantity,
           unitPrice: round(net / quantity),
@@ -165,11 +167,12 @@ export function demoDataset(years = 8, ordersPerYear = 42): Dataset {
     if (date.getTime() > Date.now()) continue
     const orderId = `D01-${digits(rand, 7)}-${digits(rand, 7)}`
     const gross = round(2.99 + rand() * 22)
+    const title = Math.floor(rand() * digitalTitles.length)
     items.push({
       id: `${orderId}#d0`,
       orderId,
-      asin: `B0${digits(rand, 8).toUpperCase()}`,
-      name: digitalTitles[Math.floor(rand() * digitalTitles.length)],
+      asin: asinFor(CATALOGUE.length + title),
+      name: digitalTitles[title],
       quantity: 1,
       unitPrice: round(gross / 1.07),
       unitTax: round(gross - gross / 1.07),
@@ -204,6 +207,8 @@ export function demoDataset(years = 8, ordersPerYear = 42): Dataset {
 }
 
 const round = (v: number) => Math.round(v * 100) / 100
+
+const asinFor = (index: number) => `B0${(index + 1).toString(36).toUpperCase().padStart(8, 'D')}`
 
 const digits = (rand: () => number, n: number) =>
   Array.from({ length: n }, () => Math.floor(rand() * 10)).join('')

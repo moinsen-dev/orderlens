@@ -195,10 +195,17 @@ export function byHour(orders: Order[]): Histogram[] {
 
 export const PRICE_BUCKETS = [0, 5, 10, 20, 50, 100, 250, 500, 1000]
 
+/** Short axis labels: nine buckets have to fit into half a card. */
+const bucketLabel = (v: number) => (v >= 1000 ? `${v / 1000}k` : String(v))
+
 export function priceHistogram(items: EnrichedItem[]): Histogram[] {
   const acc = PRICE_BUCKETS.map((low, idx) => {
     const high = PRICE_BUCKETS[idx + 1]
-    return { label: high ? `${low}–${high}` : `${low}+`, value: 0, count: 0 }
+    return {
+      label: high ? `${bucketLabel(low)}–${bucketLabel(high)}` : `${bucketLabel(low)}+`,
+      value: 0,
+      count: 0,
+    }
   })
   for (const i of items) {
     const per = i.quantity ? i.amount / i.quantity : i.amount

@@ -4,8 +4,14 @@
 Drop your export in, get spending over time, categories, repeat purchases, refunds and a
 filterable order table. Everything runs in your browser — no server, no upload, no account.
 
+[**Open the app →**](https://orderlens.moinsen.dev)
+
 [![CI](https://github.com/moinsen-dev/orderlens/actions/workflows/ci.yml/badge.svg)](https://github.com/moinsen-dev/orderlens/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+![No backend](https://img.shields.io/badge/backend-none-brightgreen)
+![Data leaves your device](https://img.shields.io/badge/data%20leaves%20your%20device-never-brightgreen)
+
+![OrderLens dashboard](docs/screenshot-dashboard.png)
 
 ---
 
@@ -68,6 +74,10 @@ your display currency.
 rates you set in Settings (there is no rate API in an offline app), so cross-currency totals
 are explicitly an estimate.
 
+![OrderLens insights](docs/screenshot-insights.png)
+
+*Both screenshots show the built-in sample data, not a real account.*
+
 ## Getting your data from Amazon
 
 1. Amazon → **Account** → **Data and Privacy** → *Request your information*.
@@ -91,8 +101,19 @@ npm run typecheck
 npm run lint
 ```
 
-Deploying is copying `dist/` anywhere that serves static files. The included
-`pages.yml` workflow publishes to GitHub Pages on every push to `main`.
+## Deploy it
+
+The build output is plain static files — host it anywhere, including a folder on
+your own machine. There is nothing to configure, no environment variables and no
+runtime.
+
+```bash
+npm run build && npx serve dist        # anywhere
+npm run deploy                          # Cloudflare Pages (this project's own host)
+```
+
+`orderlens.moinsen.dev` is a Cloudflare Pages deployment; pushing to `main` deploys it
+through `.github/workflows/deploy.yml`. Forks skip that job automatically.
 
 ## How the numbers are computed
 
