@@ -56,16 +56,15 @@ export const site: SiteConfig = {
 
   // ── Fill this in before publishing your own deployment ──────────────────
   operator: {
-    name: '',
-    company: '',
-    street: '',
-    postalCode: '',
-    city: '',
+    name: 'Ulrich Diedrichsen',
+    street: 'Kippingstraße 27',
+    postalCode: '20144',
+    city: 'Hamburg',
     country: 'Deutschland',
-    email: '',
-    phone: '',
-    vatId: '',
-    supervisoryAuthority: '',
+    email: 'business@moinsen.dev',
+    vatId: 'DE299425124',
+    supervisoryAuthority:
+      'der Hamburgische Beauftragte für Datenschutz und Informationsfreiheit (HmbBfDI)',
   },
   // ───────────────────────────────────────────────────────────────────────
 
