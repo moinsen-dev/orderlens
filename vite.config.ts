@@ -10,9 +10,16 @@ export default defineConfig({
     outDir: 'dist',
     sourcemap: false,
     rollupOptions: {
-      // Recharts is by far the heaviest dependency and changes rarely — its own
-      // chunk keeps it cached across app updates.
-      output: { manualChunks: { charts: ['recharts'], vendor: ['react', 'react-dom', 'papaparse', 'fflate'] } },
+      output: {
+        // Recharts and its d3 helpers are by far the heaviest dependency and
+        // change rarely — their own chunk stays cached across app updates.
+        advancedChunks: {
+          groups: [
+            { name: 'charts', test: /node_modules\/(recharts|d3-|victory-)/ },
+            { name: 'vendor', test: /node_modules\/(react|react-dom|scheduler|papaparse|fflate)\// },
+          ],
+        },
+      },
     },
   },
   test: { include: ['src/**/*.test.ts'] },
