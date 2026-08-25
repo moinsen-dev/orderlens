@@ -56,9 +56,10 @@ gifts-only, include-cancelled. Every number on every screen respects the filter.
 
 **Categories** — Amazon exports no category for retail items, so OrderLens derives one from
 keyword rules over product names (bilingual EN/DE out of the box). You can edit keywords,
-reorder rules, add your own, or pin a single ASIN to a category. Expect roughly 15–25 % of
-items to stay uncategorised on a first run; the Categories screen lists them by spend so the
-expensive ones are quick to fix.
+reorder rules, add your own, or pin a single ASIN to a category. On a long, varied history
+expect roughly a quarter of items to stay uncategorised — the rules are deliberately tuned
+to leave an item alone rather than file it wrongly. The Categories screen lists what is left
+sorted by spend, so the expensive ones are quick to assign.
 
 **Export** — the filtered orders or line items back out as CSV, with a converted total in
 your display currency.

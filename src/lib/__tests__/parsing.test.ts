@@ -140,6 +140,14 @@ describe('makeCategoriser', () => {
     expect(res.source).toBe('fallback')
   })
 
+  it('does not let short keywords hide inside unrelated words', () => {
+    // Leading-space keywords guard against the classic German substring traps.
+    expect(categorise(item({ name: 'Xbox Wireless Controller' })).category).toBe('Gaming')
+    expect(categorise(item({ name: 'Fire TV Stick 4K Prime Video Edition' })).category).toBe('Electronics & Computing')
+    expect(categorise(item({ name: 'Lavazza Kaffeebohnen mit Aromanoten von Gewürzen' })).category).toBe('Grocery & Drinks')
+    expect(categorise(item({ name: 'Anker Powerbank Black Edition' })).category).toBe('Electronics & Computing')
+  })
+
   it('lets a per-ASIN override win', () => {
     const withOverride = makeCategoriser({ ...defaultCategoryConfig(), overrides: { B000: 'My bucket' } })
     const res = withOverride(item({ name: 'Anker USB-C Ladekabel' }))

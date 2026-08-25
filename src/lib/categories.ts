@@ -20,6 +20,11 @@ export const UNCATEGORISED = 'Uncategorised'
  * from product names. Rules are evaluated top to bottom, first match wins —
  * which is why the narrow ones (photo, automotive) sit above the broad ones.
  * Keywords are deliberately bilingual: an amazon.de account mixes DE and EN.
+ *
+ * Keywords match as plain substrings, which is what makes German compounds work
+ * ("topf" also catches "Kochtopf"). Short words that hide inside unrelated ones
+ * therefore carry a LEADING SPACE: " roller" matches "Roller" but not
+ * "Controller", " lack" not "Black", " deo" not "Video", " reis" not "Preis".
  */
 export const defaultRules = (): CategoryRule[] => [
   {
@@ -56,7 +61,7 @@ export const defaultRules = (): CategoryRule[] => [
     keywords: ['motorrad', 'motorcycle', 'motoröl', 'getriebeöl', 'kfz', 'pkw', 'reifen', 'felge', 'scheibenwischer',
       'bremsbelag', 'bremsscheibe', 'zündkerze', 'auspuff', 'anhängerkupplung', 'kennzeichen', 'nummernschild',
       'motorradhelm', 'visier', 'lichtmaschine', 'anlasser', 'obd', 'wagenheber', 'sitzbezug', 'dachträger',
-      'ducati', 'roller', 'lenkrad', 'kettenspray', 'bremsflüssigkeit', 'starthilfe', 'autobatterie',
+      'ducati', 'motorroller', ' roller', 'lenkrad', 'kettenspray', 'bremsflüssigkeit', 'starthilfe', 'autobatterie',
       'fußmatten', 'warnweste', 'abschleppseil', 'luftfilter', 'ölfilter', 'zündspule'],
     enabled: true,
     builtin: true,
@@ -67,7 +72,7 @@ export const defaultRules = (): CategoryRule[] => [
     color: '#f97316',
     keywords: ['bohrer', 'akkuschrauber', 'schraube', 'dübel', 'hammer', 'zange', 'sägeblatt', 'stichsäge',
       'werkzeug', 'schleifpapier', 'schleifer', 'silikon', 'bauschaum', 'epoxid', 'sekundenkleber',
-      'klebeband', 'gewebeband', 'alleskleber', 'holzleim', 'lack', 'pinsel', 'zollstock', 'wasserwaage', 'multimeter',
+      'klebeband', 'gewebeband', 'alleskleber', 'holzleim', 'klarlack', 'sprühlack', ' lack', 'pinsel', 'zollstock', 'wasserwaage', 'multimeter',
       'lötkolben', 'lötstation', 'kabelbinder', 'schraubendreher', 'inbus', 'drehmoment', 'trittleiter',
       'winkelschleifer', 'gewindeschneider', 'spachtel', 'fugen', 'nietzange', 'schleifscheibe', 'bit-satz',
       'ersatzklingen', 'cuttermesser', 'maurer', 'dichtungsband', 'montagekleber', 'holzschrauben'],
@@ -78,7 +83,7 @@ export const defaultRules = (): CategoryRule[] => [
     id: 'garden',
     name: 'Garden & Plants',
     color: '#65a30d',
-    keywords: ['garten', 'pflanze', 'blumen', 'samen', 'saatgut', 'blumenerde', 'dünger', 'rasen',
+    keywords: ['garten', 'pflanze', 'blumen', 'blumensamen', ' samen', 'saatgut', 'blumenerde', 'dünger', 'rasen',
       'gießkanne', 'hochbeet', 'terrasse', 'grill', 'grillkohle', 'briketts', 'heckenschere', 'laubbläser',
       'sonnenschirm', 'blumentopf', 'pflanzkübel', 'gartenschlauch', 'kettensäge', 'vogelhaus', 'insektenhotel',
       'pizzaofen', 'feuerschale', 'schneeschieber', 'streugut'],
@@ -111,7 +116,7 @@ export const defaultRules = (): CategoryRule[] => [
     name: 'Music & Instruments',
     color: '#a855f7',
     keywords: ['gitarre', 'gitarren', 'saiten', 'plektrum', 'klavier', 'piano', 'schlagzeug', 'drumsticks',
-      'verstärker', 'noten', 'ukulele', 'synthesizer', 'midi', 'mischpult', 'stimmgerät', 'kapodaster',
+      'verstärker', 'notenständer', 'notenblätter', ' noten', 'ukulele', 'synthesizer', 'midi', 'mischpult', 'stimmgerät', 'kapodaster',
       'gitarrengurt', 'audio-interface', 'monitorboxen'],
     enabled: true,
     builtin: true,
@@ -128,7 +133,7 @@ export const defaultRules = (): CategoryRule[] => [
       'smartphone', 'handy', 'tablet', 'ipad', 'iphone', 'laptop', 'notebook', 'macbook', 'imac', 'apple watch',
       'apple pencil', 'drucker', 'toner', 'druckerpatrone', 'tinte', 'webcam', 'fernseher', 'smart tv',
       'receiver', 'dockingstation', 'raspberry', 'arduino', 'esp32', 'sensor', 'ethernet', 'netzwerk',
-      'patchkabel', 'repeater', 'powerline', 'mesh', 'nas', 'synology', 'diskstation', 'schutzfolie',
+      'patchkabel', 'repeater', 'powerline', 'nas-system', 'netzwerkspeicher', 'synology', 'diskstation', 'schutzfolie',
       'displayschutz', 'smartwatch', 'fitness tracker', 'echo dot', 'fire tv', 'alexa', 'amazon echo',
       'steckdose', 'smart home', 'zigbee', 'thermostat', 'geforce', 'grafikkarte', 'mainboard', 'prozessor',
       'ryzen', 'arbeitsspeicher', 'gehäuselüfter', 'pc-gehäuse', 'netzwerkkabel', 'fernbedienung', 'harmony',
@@ -167,7 +172,7 @@ export const defaultRules = (): CategoryRule[] => [
       'led-lampe', 'philips hue', 'vorhang', 'duschvorhang', 'teppich', 'mikrowelle', 'backofen', 'backblech',
       'auflaufform', 'thermoskanne', 'regal', 'kleiderbügel', 'spülmaschine', 'luftreiniger', 'luftbefeuchter',
       'luftentfeuchter', 'ventilator', 'heizlüfter', 'wandhalterung', 'schreibtisch', 'stuhl', 'sofa',
-      'seifenspender', 'waage', 'badspiegel', 'handtuchhalter', 'duschkopf', 'porzellan', 'sieb', 'reibe',
+      'seifenspender', 'waage', 'badspiegel', 'handtuchhalter', 'duschkopf', 'porzellan', 'küchensieb', 'reibe',
       'emsa', 'thermometer', 'kerzen', 'bilderrahmen', 'garderobe', 'schuhregal', 'wäschenetz'],
     enabled: true,
     builtin: true,
@@ -178,7 +183,7 @@ export const defaultRules = (): CategoryRule[] => [
     color: '#14b8a6',
     keywords: ['shampoo', 'duschgel', 'duschbad', 'creme', 'zahnbürste', 'zahnpasta', 'zahnseide', 'sonicare',
       'oral-b', 'rasierer', 'rasierklingen', 'oneblade', 'haarschneider', 'haartrimmer', 'bartpflege',
-      'deo', 'seife', 'vitamin', 'magnesium', 'zink', 'omega', 'kapseln', 'tabletten', 'nahrungsergänzung',
+      'deodorant', 'deospray', ' deo', 'seife', 'vitamin', 'magnesium', 'zink', 'omega', 'kapseln', 'tabletten', 'nahrungsergänzung',
       'kollagen', 'probiotika', 'melatonin', 'ashwagandha', 'spirulina', 'chlorella', 'msm',
       'pflaster', 'verband', 'desinfektion', 'sonnencreme', 'hautpflege', 'handcreme', 'lippenpflege',
       'parfum', 'massage', 'blutdruckmessgerät', 'fieberthermometer', 'ffp2', 'einweghandschuhe',
@@ -197,8 +202,8 @@ export const defaultRules = (): CategoryRule[] => [
       'chili', 'habanero', 'jalapeno', 'chipotle', 'paprika', 'meersalz', 'pfeffer', 'mehl', 'zucker',
       'getrocknet', 'trockenfrüchte', 'datteln', 'feigen', 'rosinen', 'snack', 'müsli', 'haferflocken',
       'sirup', 'kakao', 'chips', 'gummibärchen', 'süßigkeiten', 'bio-', 'kräuter', 'kurkuma', 'ingwer',
-      'zimt', 'vanille', 'backpulver', 'hefe', 'reis', 'linsen', 'kichererbsen', 'quinoa', 'wurst',
-      'schinken', 'käse', 'eier', 'milch', 'haferdrink', 'oatly', 'joghurt', 'butter', 'essig', 'senf',
+      'zimt', 'vanille', 'backpulver', 'hefe', 'basmati', 'milchreis', ' reis', 'linsen', 'kichererbsen', 'quinoa', 'wurst',
+      'schinken', 'käse', 'hühnereier', 'freilandhaltung', ' eier', 'milch', 'haferdrink', 'oatly', 'joghurt', 'butter', 'essig', 'senf',
       'ketchup', 'sauce', 'tomaten', 'marmelade', 'aufstrich', 'brot', 'mineralwasser', 'limonade',
       'bier', 'wein', 'whisky', 'likör', 'pulver', 'vegan', 'gemahlen', 'lebensmittel'],
     enabled: true,
@@ -220,7 +225,7 @@ export const defaultRules = (): CategoryRule[] => [
     color: '#ec4899',
     keywords: ['t-shirt', 'shirt', 'hose', 'jacke', 'pullover', 'hoodie', 'socken', 'schuhe', 'sneaker', 'stiefel',
       'mütze', 'handschuhe', 'gürtel', 'jeans', 'kleid', 'unterwäsche', 'boxershorts', 'badehose', 'hemd',
-      'sweatshirt', 'schal', 'regenjacke', 'weste', 'krawatte', 'einlegesohlen', 'hausschuhe', 'sandalen'],
+      'sweatshirt', 'halstuch', 'regenjacke', 'weste', 'krawatte', 'einlegesohlen', 'hausschuhe', 'sandalen'],
     enabled: true,
     builtin: true,
   },

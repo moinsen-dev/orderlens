@@ -35,7 +35,7 @@ All three run in CI on every pull request.
 
 ## Good first contributions
 
-**Category keywords.** Roughly 15–25 % of items stay uncategorised on a typical account.
+**Category keywords.** Roughly a quarter of items stay uncategorised on a long account history.
 `src/lib/categories.ts` holds the rule list; adding keywords is a one-line change. Two things
 to keep in mind:
 
@@ -43,8 +43,11 @@ to keep in mind:
   broad ones. A keyword like `gaming` matches half the electronics catalogue — prefer
   `playstation`, `joy-con`, `gaming-stuhl`.
 - Keywords are plain lower-cased substrings of the product name. `topf` also matches
-  `Kochtopf`, which is usually what you want — and `messer` also matches `Multimesser`,
-  which sometimes isn't. Check the effect before you claim the win.
+  `Kochtopf`, which is usually what you want. Short words that hide inside unrelated ones
+  need a **leading space**: `roller` would match `Controller`, `lack` would match `Black`,
+  `deo` would match `Video`, `reis` would match `Preis`. Writing them as `" roller"` fixes
+  that while still matching the word at the start of a title.
+- A wrong category is worse than none. When in doubt, leave the item uncategorised.
 
 **Export layouts.** Every Amazon locale and export generation names its columns slightly
 differently. Support lives in the alias lists in `src/lib/amazon/orderHistory.ts` and its
