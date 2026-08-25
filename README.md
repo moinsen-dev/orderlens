@@ -70,6 +70,11 @@ sorted by spend, so the expensive ones are quick to assign.
 **Export** — the filtered orders or line items back out as CSV, with a converted total in
 your display currency.
 
+**Legal pages** — imprint and privacy notice ship with the app at `#imprint` and
+`#privacy`, generated from one config file and reachable from the footer on every screen.
+The privacy notice is short for a reason: there is nothing to disclose beyond the host's
+access logs.
+
 **Multi-currency** — orders keep their original currency. Aggregates are converted with
 rates you set in Settings (there is no rate API in an offline app), so cross-currency totals
 are explicitly an estimate.
@@ -114,6 +119,12 @@ npm run deploy                          # Cloudflare Pages (this project's own h
 
 `orderlens.moinsen.dev` is a Cloudflare Pages deployment; pushing to `main` deploys it
 through `.github/workflows/deploy.yml`. Forks skip that job automatically.
+
+**Publishing your own instance?** Fill in `src/config/site.ts` first. The imprint and
+privacy pages are generated from it, and a site operated from Germany needs a valid
+imprint under § 5 DDG — the more so once it links anywhere commercial. Until the file is
+filled in, both pages say plainly that they are unconfigured instead of showing someone
+else's details.
 
 ## How the numbers are computed
 

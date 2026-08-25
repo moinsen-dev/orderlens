@@ -8,9 +8,11 @@ import {
 } from 'lucide-react'
 import type { ComponentType } from 'react'
 import { FilterBar } from './components/FilterBar'
+import { Footer, SidebarPromo } from './components/Footer'
 import { Spinner } from './components/ui'
 import { useStore, type ViewId } from './state/store'
 import { CategoriesView } from './views/CategoriesView'
+import { LegalView } from './views/LegalView'
 import { DashboardView } from './views/DashboardView'
 import { ImportView } from './views/ImportView'
 import { InsightsView } from './views/InsightsView'
@@ -39,12 +41,14 @@ export default function App() {
     )
   }
 
-  const active = hasData ? view : view === 'settings' ? view : 'import'
+  // Without data only the pages that do not need any stay reachable.
+  const alwaysOpen: ViewId[] = ['settings', 'imprint', 'privacy']
+  const active = hasData || alwaysOpen.includes(view) ? view : 'import'
 
   return (
     <div className="flex min-h-full flex-col lg:flex-row">
       <aside
-        className="shrink-0 border-b bg-[var(--color-surface)] lg:h-screen lg:w-56 lg:border-r lg:border-b-0"
+        className="shrink-0 border-b bg-[var(--color-surface)] lg:flex lg:h-screen lg:w-56 lg:flex-col lg:border-r lg:border-b-0"
         style={{ borderColor: 'var(--color-line)' }}
       >
         <div className="flex items-center gap-2 px-4 py-4">
@@ -74,9 +78,12 @@ export default function App() {
             )
           })}
         </nav>
-        <p className="muted hidden px-4 py-3 text-[11px] leading-relaxed lg:block">
-          Runs fully offline in your browser. Your export never leaves this device.
-        </p>
+        <div className="mt-auto hidden lg:block">
+          <p className="muted px-4 pb-3 text-[11px] leading-relaxed">
+            Runs fully offline in your browser. Your export never leaves this device.
+          </p>
+          <SidebarPromo />
+        </div>
       </aside>
 
       <main className="min-w-0 flex-1 p-4 lg:h-screen lg:overflow-y-auto lg:p-6">
@@ -87,6 +94,9 @@ export default function App() {
         {active === 'insights' && <InsightsView />}
         {active === 'import' && <ImportView />}
         {active === 'settings' && <SettingsView />}
+        {active === 'imprint' && <LegalView doc="imprint" />}
+        {active === 'privacy' && <LegalView doc="privacy" />}
+        <Footer />
       </main>
     </div>
   )

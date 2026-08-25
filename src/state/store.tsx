@@ -21,7 +21,31 @@ import { emptyDataset, type Dataset, type EnrichedItem, type Order } from '../li
 import { defaultSettings, type Settings } from '../lib/settings'
 import * as storage from '../lib/storage'
 
-export type ViewId = 'dashboard' | 'orders' | 'categories' | 'insights' | 'import' | 'settings'
+export type ViewId =
+  | 'dashboard'
+  | 'orders'
+  | 'categories'
+  | 'insights'
+  | 'import'
+  | 'settings'
+  | 'imprint'
+  | 'privacy'
+
+const VIEW_IDS: ViewId[] = [
+  'dashboard',
+  'orders',
+  'categories',
+  'insights',
+  'import',
+  'settings',
+  'imprint',
+  'privacy',
+]
+
+const viewFromHash = (): ViewId | null => {
+  const id = window.location.hash.replace(/^#\/?/, '') as ViewId
+  return VIEW_IDS.includes(id) ? id : null
+}
 
 interface StoreValue {
   ready: boolean
@@ -62,7 +86,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const [settings, setSettingsState] = useState<Settings>(defaultSettings)
   const [categories, setCategoriesState] = useState<CategoryConfig>(defaultCategoryConfig)
   const [filters, setFiltersState] = useState<Filters>(defaultFilters)
-  const [view, setView] = useState<ViewId>('import')
+  const [view, setViewState] = useState<ViewId>(() => viewFromHash() ?? 'import')
 
   useEffect(() => {
     let cancelled = false
@@ -73,13 +97,29 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       setCategoriesState(storage.loadCategories())
       if (stored?.items?.length) {
         setDataset(stored)
-        setView('dashboard')
+        // A legal page linked from outside must survive the boot sequence.
+        if (!viewFromHash()) setViewState('dashboard')
       }
       setReady(true)
     })()
     return () => {
       cancelled = true
     }
+  }, [])
+
+  /** The URL is the source of truth for the current view, so pages are linkable. */
+  const setView = useCallback((next: ViewId) => {
+    setViewState(next)
+    if (viewFromHash() !== next) window.location.hash = next
+  }, [])
+
+  useEffect(() => {
+    const onHashChange = () => {
+      const fromHash = viewFromHash()
+      if (fromHash) setViewState(fromHash)
+    }
+    window.addEventListener('hashchange', onHashChange)
+    return () => window.removeEventListener('hashchange', onHashChange)
   }, [])
 
   useEffect(() => {
@@ -149,7 +189,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         setBusy(null)
       }
     },
-    [commit, dataset],
+    [commit, dataset, setView],
   )
 
   const loadDemo = useCallback(async () => {
@@ -158,14 +198,14 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     await commit(demoDataset())
     setBusy(null)
     setView('dashboard')
-  }, [commit])
+  }, [commit, setView])
 
   const clearData = useCallback(async () => {
     await storage.clearDataset()
     setDataset(emptyDataset())
     setFiltersState(defaultFilters())
     setView('import')
-  }, [])
+  }, [setView])
 
   const categoriser = useMemo(() => makeCategoriser(categories), [categories])
 

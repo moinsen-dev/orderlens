@@ -57,6 +57,13 @@ siblings; add your column name to the right alias list and a fixture row to the 
 `EnrichedItem[]` / `Order[]`) and are rendered by a view. Keeping the maths out of the
 components is what makes it testable.
 
+## If you publish your own deployment
+
+`src/config/site.ts` is the only place with operator data. Fill it in with **your** details
+before putting an instance online — the imprint and privacy pages are generated from it,
+and shipping someone else's address is worse than shipping none. Leave a field empty and
+the page says so rather than inventing content.
+
 ## Conventions
 
 - **No backend, ever.** A change that introduces a network request to anything other than
