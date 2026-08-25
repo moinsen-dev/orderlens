@@ -1,0 +1,20 @@
+name: Category rule
+description: Products that land in the wrong category (or in none)
+labels: [categories, good first issue]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Categories are keyword rules over product names — see `src/lib/categories.ts`.
+        Adding a keyword is a one-line change and a great first contribution.
+  - type: textarea
+    id: products
+    attributes:
+      label: Product names that are classified wrongly
+      description: Paste the product titles (no order ids, no addresses).
+    validations:
+      required: true
+  - type: input
+    id: expected
+    attributes:
+      label: Which category should they land in?

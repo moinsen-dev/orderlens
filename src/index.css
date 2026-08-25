@@ -1,0 +1,109 @@
+@import 'tailwindcss';
+
+/* The app owns its theme switch, so `dark:` follows a class instead of the OS. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-surface: #ffffff;
+  --color-canvas: #f6f7f9;
+  --color-line: #e3e6ea;
+  --color-ink: #0f172a;
+  --color-muted: #64748b;
+  --color-accent: #d97706;
+  --color-accent-soft: #fef3c7;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+:root {
+  color-scheme: light;
+}
+
+.dark {
+  color-scheme: dark;
+  --color-surface: #131821;
+  --color-canvas: #0b0f16;
+  --color-line: #232b38;
+  --color-ink: #e8edf5;
+  --color-muted: #8a97ab;
+  --color-accent: #f59e0b;
+  --color-accent-soft: #2a2011;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+@layer components {
+  .card {
+    @apply rounded-xl border bg-[var(--color-surface)] p-4;
+    border-color: var(--color-line);
+  }
+
+  .btn {
+    @apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-lg border px-3 py-2 text-sm font-medium transition
+      hover:bg-[var(--color-canvas)] disabled:cursor-not-allowed disabled:opacity-50;
+    border-color: var(--color-line);
+  }
+
+  .btn-primary {
+    @apply border-transparent bg-[var(--color-accent)] text-white hover:brightness-110;
+  }
+
+  .btn-ghost {
+    @apply border-transparent hover:bg-[var(--color-canvas)];
+  }
+
+  .input {
+    @apply w-full rounded-lg border bg-[var(--color-surface)] px-3 py-2 text-sm outline-none
+      focus:border-[var(--color-accent)] focus:ring-2 focus:ring-[var(--color-accent)]/25;
+    border-color: var(--color-line);
+  }
+
+  .chip {
+    @apply inline-flex cursor-pointer items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium transition;
+    border-color: var(--color-line);
+  }
+
+  .chip-active {
+    @apply border-transparent bg-[var(--color-accent)] text-white;
+  }
+
+  .muted {
+    color: var(--color-muted);
+  }
+
+  .th {
+    @apply px-3 py-2 text-left text-xs font-semibold tracking-wide uppercase;
+    color: var(--color-muted);
+  }
+
+  .td {
+    @apply px-3 py-2.5 align-top text-sm;
+  }
+}
+
+/* Keep long product titles from stretching table layouts. */
+.clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.recharts-cartesian-axis-tick text {
+  fill: var(--color-muted);
+  font-size: 11px;
+}
+
+.recharts-cartesian-grid line {
+  stroke: var(--color-line);
+}

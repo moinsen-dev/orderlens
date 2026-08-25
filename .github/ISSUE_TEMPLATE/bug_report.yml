@@ -1,0 +1,31 @@
+name: Bug report
+description: Something does not work as expected
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **Please do not attach your real export.** If a specific row breaks the parser,
+        anonymise it first — replace names, addresses and order ids.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What did you expect instead?
+    validations:
+      required: true
+  - type: input
+    id: file
+    attributes:
+      label: Which file did you import?
+      placeholder: "Order History.csv from a 2026 amazon.de export"
+  - type: textarea
+    id: sample
+    attributes:
+      label: Anonymised sample row (optional)
+      render: csv
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and version
+      placeholder: Firefox 141 on macOS

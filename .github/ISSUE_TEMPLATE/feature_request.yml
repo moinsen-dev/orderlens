@@ -1,0 +1,14 @@
+name: Feature request
+description: Suggest a metric, chart or workflow
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What question about your orders can you not answer today?
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: How would you like to see it answered?
