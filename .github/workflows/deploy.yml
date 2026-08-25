@@ -13,6 +13,10 @@ jobs:
   cloudflare-pages:
     if: github.repository == 'moinsen-dev/orderlens'
     runs-on: ubuntu-latest
+    env:
+      # `secrets` cannot be read from an `if:` expression — only from `env`,
+      # `with` and `run`. Lifting it here makes the guard below legal.
+      HAS_CLOUDFLARE_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN != '' }}
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
@@ -24,7 +28,7 @@ jobs:
       - uses: cloudflare/wrangler-action@v4
         # Skipped until the deploy credentials exist, so the run never fails
         # for a checkout that has no business deploying.
-        if: ${{ secrets.CLOUDFLARE_API_TOKEN != '' }}
+        if: env.HAS_CLOUDFLARE_TOKEN == 'true'
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
